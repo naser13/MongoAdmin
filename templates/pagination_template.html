@@ -1,0 +1,27 @@
+<div class="col-lg-12" style="text-align: center">
+    <nav aria-label="Page navigation" style="display: inline-block">
+        <ul class="pagination">
+            {% if objects.has_previous %}
+                <li class="page-item">
+                    <a class="page-link" href="#" data-page-number="1"><<</a>
+                </li>
+                <li class="page-item">
+                    <a class="page-link" href="#" data-page-number="{{ objects.previous_page_number }}"><</a>
+                </li>
+            {% endif %}
+            <li class="page-item">
+                <a class="page-link" href="#" data-page-number="{{ objects.number }}">
+                    {{ objects.number }} of {{ objects.paginator.num_pages }}
+                </a>
+            </li>
+            {% if objects.has_next %}
+                <li class="page-item">
+                    <a class="page-link" href="#" data-page-number="{{ objects.next_page_number }}">></a>
+                </li>
+                <li class="page-item">
+                    <a class="page-link" href="#" data-page-number="{{ objects.paginator.num_pages }}">>></a>
+                </li>
+            {% endif %}
+        </ul>
+    </nav>
+</div>

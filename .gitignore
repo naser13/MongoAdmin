@@ -1,0 +1,7 @@
+.idea
+db.sqlite3
+venv
+*.pyc
+*.pyo
+*__pycache__*
+local_settings.py

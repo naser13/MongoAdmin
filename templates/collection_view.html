@@ -1,0 +1,54 @@
+{% extends 'base.html' %}
+{% load bootstrap getattr %}
+
+{% block js %}
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $(".page-link").click(function () {
+                $("#page_number").val($(this).data("page-number"));
+                $("#search-form").submit();
+                return false;
+            });
+        });
+    </script>
+{% endblock %}
+
+{% block body %}
+    <div class="col-lg-12">
+        <form method="post" id="search-form">
+            {% csrf_token %}
+            <input type="hidden" name="page" value="{{ objects.number }}" id="page_number">
+            <div class="col-lg-12 col-md-12 col-sm-12 clearfix">
+                {% for field in form.visible_fields %}
+                    <div class="col-lg-3 col-md-5 col-sm-10" style="float: left">
+                        {{ field|bootstrap }}
+                    </div>
+                {% endfor %}
+                <button type="submit" class="form-control btn btn-primary">find</button>
+            </div>
+        </form>
+    </div>
+    <hr/>
+    <div class="col-lg-12">
+        {% include 'pagination_template.html' %}
+        <table class="table-striped table-hover w-100" style="margin-bottom: 16px">
+            <thead>
+            <tr>
+                {% for key in keys %}
+                    <th>{{ key.0 }}<br/>{{ key.1 }}</th>
+                {% endfor %}
+            </tr>
+            </thead>
+            <tbody>
+            {% for obj in objects %}
+                <tr>
+                    {% for key in keys %}
+                        <td>{{ obj|getattr:key.0 }}</td>
+                    {% endfor %}
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+        {% include 'pagination_template.html' %}
+    </div>
+{% endblock %}

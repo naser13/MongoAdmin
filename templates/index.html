@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+
+{% block body %}
+    <div class="col-lg-12">
+        <table class="table-striped table-hover w-100">
+            <thead>
+            <tr>
+                <th>name</th>
+                <th>size</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for obj in objects %}
+                <tr>
+                    <td>
+                        <a href="{% url 'db_view' db_name=obj.name %}">
+                            {{ obj.name }}
+                        </a>
+                    </td>
+                    <td>{{ obj.count }}</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock %}
