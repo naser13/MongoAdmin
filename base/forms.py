@@ -7,7 +7,7 @@ NUMERIC_TYPES = ['Number', 'NumberLong']
 class SearchForm(forms.Form):
     def __init__(self, *args, **kwargs):
         self.keys = kwargs.pop("keys")
-        super().__init__(*args, **kwargs)
+        super(SearchForm, self).__init__(*args, **kwargs)
         for key, key_type in self.keys:
             if key_type not in TYPES_NOT_FILTERED:
                 if key_type in NUMERIC_TYPES:
