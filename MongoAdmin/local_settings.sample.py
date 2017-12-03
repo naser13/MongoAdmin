@@ -12,3 +12,4 @@ DATABASES = {
 DEBUG = True
 SECRET_KEY = ''
 ALLOWED_HOSTS = []
+MONGO_PATH = "/usr/bin/mongo"
