@@ -1,7 +1,3 @@
-import json
-import subprocess
-
-from django.conf import settings
 from django.contrib.admin.views.decorators import staff_member_required
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.http import Http404
@@ -9,12 +5,9 @@ from django.shortcuts import render
 from pymongo import MongoClient
 
 from base.forms import SearchForm
+from base.models import get_collection_keys
 
 client = MongoClient()
-
-variety_command = """%s %s --quiet --eval "var collection = '%s', outputFormat='json'" variety.js"""
-
-TYPES_NOT_SHOWN = ['Object', 'ObjectId']
 
 
 def index(request):
@@ -44,15 +37,7 @@ def collection_view(request, db_name, collection_name):
         raise Http404()
     collection = db[collection_name]
 
-    p = subprocess.Popen(variety_command % (settings.MONGO_PATH, db_name, collection_name), shell=True, stdout=subprocess.PIPE)
-    variety_result, _ = p.communicate()
-    variety_result = json.loads(variety_result)
-    collection_keys = []
-    for result in variety_result:
-        key = result['_id']['key']
-        key_type = list(result['value']['types'].keys())[0]
-        if key_type not in TYPES_NOT_SHOWN:
-            collection_keys.append((key, key_type))
+    collection_keys = get_collection_keys(db_name, collection_name)
 
     objects = collection.find()
     if request.method == 'POST':
