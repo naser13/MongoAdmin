@@ -4,7 +4,7 @@ from functools import lru_cache
 
 from django.conf import settings
 
-TYPES_NOT_SHOWN = ['Object', 'ObjectId']
+TYPES_NOT_SHOWN = ['ObjectId']
 
 variety_command = """%s %s --quiet --eval "var collection = '%s', outputFormat='json'" variety.js"""
 
@@ -19,7 +19,7 @@ def get_collection_keys(db_name, collection_name):
     for result in variety_result:
         key = result['_id']['key']
         key_type = list(result['value']['types'].keys())[0]
-        if key_type not in TYPES_NOT_SHOWN:
+        if key_type not in TYPES_NOT_SHOWN and '.' not in key:
             collection_keys.append((key, key_type))
 
     return collection_keys
