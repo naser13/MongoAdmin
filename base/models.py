@@ -14,7 +14,7 @@ def get_collection_keys(db_name, collection_name):
     p = subprocess.Popen(variety_command % (settings.MONGO_PATH, db_name, collection_name), shell=True,
                          stdout=subprocess.PIPE)
     variety_result, _ = p.communicate()
-    variety_result = json.loads(variety_result)
+    variety_result = json.loads(variety_result.decode('utf8'))
     collection_keys = []
     for result in variety_result:
         key = result['_id']['key']
