@@ -8,6 +8,8 @@ TYPES_NOT_SHOWN = ['ObjectId']
 
 variety_command = """%s %s --quiet --eval "var collection = '%s', outputFormat='json'" variety.js"""
 
+csv_command = """%sexport --db %s --collection %s --csv --fields %s"""
+
 
 @lru_cache(maxsize=128)
 def get_collection_keys(db_name, collection_name):
@@ -23,3 +25,12 @@ def get_collection_keys(db_name, collection_name):
             collection_keys.append((key, key_type))
 
     return collection_keys
+
+
+def get_collection_csv(db_name, collection_name):
+    fields = get_collection_keys(db_name, collection_name)
+    p = subprocess.Popen(
+        csv_command % (settings.MONGO_PATH, db_name, collection_name, ",".join([field[0] for field in fields])),
+        shell=True, stdout=subprocess.PIPE)
+    csv, _ = p.communicate()
+    return csv

@@ -1,11 +1,11 @@
 from django.contrib.admin.views.decorators import staff_member_required
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
-from django.http import Http404
+from django.http import Http404, HttpResponse
 from django.shortcuts import render
 from pymongo import MongoClient
 
 from base.forms import SearchForm
-from base.models import get_collection_keys
+from base.models import get_collection_keys, get_collection_csv
 
 client = MongoClient()
 
@@ -57,3 +57,11 @@ def collection_view(request, db_name, collection_name):
     except EmptyPage:
         objects = paginator.page(paginator.num_pages)
     return render(request, 'collection_view.html', {'objects': objects, 'form': form, 'keys': collection_keys})
+
+
+@staff_member_required
+def get_csv(request, db_name, collection_name):
+    csv = get_collection_csv(db_name, collection_name)
+    response = HttpResponse(csv, content_type="text/csv; charset=utf-8")
+    response['Content-Disposition'] = 'attachment; filename="%s.csv"' % collection_name
+    return response
