@@ -21,6 +21,10 @@ class Command(BaseCommand):
         devices = client['joojoo']['deviceDB'].find({"info.pusheId": {"$exists": True}})
         for device in devices:
             if device["info"]["pusheId"] not in pusheIds:
-                for user in device["users"]:
+                users = device["users"]
+                if not users:
+                    self.stdout.write(device)
+                    continue
+                for user in users:
                     self.stdout.write(user)
         self.stdout.write(self.style.SUCCESS('Finish'))
