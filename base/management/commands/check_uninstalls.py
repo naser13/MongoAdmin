@@ -16,10 +16,11 @@ class Command(BaseCommand):
         f = open(options['csv_path'], "r", encoding="utf-8")
         reader = csv.reader(f)
         pusheIds = list(reader)
+        pusheIds = sum(pusheIds, [])
 
         devices = client['joojoo']['deviceDB'].find({"info.pusheId": {"$exists": True}})
         for device in devices:
-            if device["info.pusheId"] not in pusheIds:
+            if device["info"]["pusheId"] not in pusheIds:
                 for user in device["users"]:
                     self.stdout.write(user)
         self.stdout.write(self.style.SUCCESS('Finish'))
