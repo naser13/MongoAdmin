@@ -8,7 +8,7 @@ class Command(BaseCommand):
     help = 'map users to devices'
 
     def handle(self, *args, **options):
-        devices = client['joojoo']['deviceDB'].find()
+        devices = client['joojoo']['deviceDB'].find({"info.appVersion": 16})
         counter = 0
         for device in devices:
             guid = device["guid"]
