@@ -23,7 +23,7 @@ class Command(BaseCommand):
             if device["info"]["pusheId"] not in pusheIds:
                 users = device["users"]
                 if not users:
-                    self.stdout.write(device)
+                    self.stdout.write(str(device))
                     continue
                 for user in users:
                     self.stdout.write(user)
