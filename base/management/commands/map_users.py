@@ -9,6 +9,7 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         devices = client['joojoo']['deviceDB'].find()
+        counter = 0
         for device in devices:
             guid = device["guid"]
             queries = client['joojoo']['V2queryDB'].find({"guid": guid, "Authorization": {"$exists": True}})
@@ -19,5 +20,7 @@ class Command(BaseCommand):
                 if token:
                     users.add(token['phoneNumber'])
             device["users"] = list(users)
-            client['joojoo']['deviceDB'].find_one_and_replace({"guid": guid}, device)
+            client['joojoo']['deviceDB'].find_one_and_replace({"_id": device.pop("_id")}, device)
+            counter += 1
+            self.stdout.write(self.style.SUCCESS(counter))
         self.stdout.write(self.style.SUCCESS('Successful'))
