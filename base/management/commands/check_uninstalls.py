@@ -17,7 +17,7 @@ class Command(BaseCommand):
         reader = csv.reader(f)
         pusheIds = list(reader)
         pusheIds = sum(pusheIds, [])
-        uninstalls = []
+        uninstalls = set()
 
         devices = client['joojoo']['deviceDB'].find({"info.pusheId": {"$exists": True}})
         for device in devices:
@@ -26,7 +26,8 @@ class Command(BaseCommand):
                     self.stdout.write(str(device))
                     continue
                 for user in device["users"]:
-                    uninstalls.append(user)
+                    uninstalls.add(user)
+
         for uninstall in uninstalls:
             self.stdout.write(uninstall)
         self.stdout.write(self.style.SUCCESS('Finish'))
