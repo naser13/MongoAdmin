@@ -19,7 +19,7 @@ class Command(BaseCommand):
         pusheIds = sum(pusheIds, [])
         uninstalls = set()
 
-        devices = client['joojoo']['deviceDB'].find({"info.pusheId": {"$exists": True}})
+        devices = client['joojoo']['deviceDB'].find({"info.pusheId": {"$exists": True, "$ne": None}})
         for device in devices:
             if device["info"]["pusheId"] not in pusheIds:
                 if "users" not in device or not device["users"]:
