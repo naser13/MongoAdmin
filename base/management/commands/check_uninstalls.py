@@ -32,9 +32,10 @@ class Command(BaseCommand):
                 else:
                     branchReferral = "###"
                 query_count = client['joojoo']['queryDB'].count({"device": device["guid"]})
-                v2_query_count = client['joojoo']['V2queryDB'].count({"guid": device["guid"]})
+                code_query_count = client['joojoo']['V2queryDB'].count(
+                    {"guid": device["guid"], "url": "//joojeh.xyz/api/v2/auth/code/"})
                 uninstalls[device["info"]["pusheId"]].append(
-                    (branchReferral, users, v2_query_count - query_count, query_count))
+                    (branchReferral, users, code_query_count, query_count))
 
         for uninstall in uninstalls.items():
             print(uninstall)
