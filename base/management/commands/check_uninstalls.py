@@ -26,8 +26,8 @@ class Command(BaseCommand):
                     users = device["users"]
                 else:
                     users = []
-                if "branchReferral" in device:
-                    branchReferral = device["branchReferral"]
+                if "branchReferral" in device["info"]:
+                    branchReferral = device["info"]["branchReferral"]
                 else:
                     branchReferral = "###"
                 uninstalls.append((branchReferral, users))
