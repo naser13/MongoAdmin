@@ -17,7 +17,7 @@ class Command(BaseCommand):
         reader = csv.reader(f)
         pusheIds = list(reader)
         pusheIds = sum(pusheIds, [])
-        uninstalls = set()
+        uninstalls = []
 
         devices = client['joojoo']['deviceDB'].find({"info.pusheId": {"$exists": True, "$ne": None}})
         for device in devices:
@@ -29,7 +29,7 @@ class Command(BaseCommand):
                     branchReferral = device["branchReferral"]
                 else:
                     branchReferral = ""
-                uninstalls.add((branchReferral, device["users"]))
+                uninstalls.append((branchReferral, device["users"]))
 
         for uninstall in uninstalls:
             self.stdout.write(uninstall)
