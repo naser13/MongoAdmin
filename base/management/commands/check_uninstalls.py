@@ -33,6 +33,6 @@ class Command(BaseCommand):
                     branchReferral = "###"
                 uninstalls[device["info"]["pusheId"]].append((branchReferral, users))
 
-        for uninstall in uninstalls:
+        for uninstall in uninstalls.items():
             print(uninstall)
         self.stdout.write(self.style.SUCCESS('Finish'))
