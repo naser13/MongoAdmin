@@ -1,4 +1,5 @@
 import csv
+from collections import defaultdict
 
 from django.core.management.base import BaseCommand
 from pymongo import MongoClient
@@ -17,7 +18,7 @@ class Command(BaseCommand):
         reader = csv.reader(f)
         pusheIds = list(reader)
         pusheIds = sum(pusheIds, [])
-        uninstalls = []
+        uninstalls = defaultdict(lambda: [])
 
         devices = client['joojoo']['deviceDB'].find({"info.pusheId": {"$exists": True, "$ne": None}})
         for device in devices:
@@ -30,7 +31,7 @@ class Command(BaseCommand):
                     branchReferral = device["info"]["branchReferral"]
                 else:
                     branchReferral = "###"
-                uninstalls.append((branchReferral, users))
+                uninstalls[device["info"]["pusheId"]].append((branchReferral, users))
 
         for uninstall in uninstalls:
             print(uninstall)
