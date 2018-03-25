@@ -22,14 +22,15 @@ class Command(BaseCommand):
         devices = client['joojoo']['deviceDB'].find({"info.pusheId": {"$exists": True, "$ne": None}})
         for device in devices:
             if device["info"]["pusheId"] not in pusheIds:
-                if "users" not in device or not device["users"]:
-                    self.stdout.write(str(device))
-                    continue
+                if "users" in device:
+                    users = device["users"]
+                else:
+                    users = []
                 if "branchReferral" in device:
                     branchReferral = device["branchReferral"]
                 else:
                     branchReferral = ""
-                uninstalls.append((branchReferral, device["users"]))
+                uninstalls.append((branchReferral, users))
 
         for uninstall in uninstalls:
             print(uninstall)
