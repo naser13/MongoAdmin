@@ -17,8 +17,11 @@ class Command(BaseCommand):
         for device in devices:
             first_date = datetime.datetime.fromtimestamp(int(device["firstDate"] / 1000))
             last_date = datetime.datetime.fromtimestamp(int(device["lastDate"] / 1000))
-            usage_duration = last_date - first_date
-            uninstalls[usage_duration.days] += 1
+            if first_date == last_date:
+                uninstalls[-1] += 1
+            else:
+                usage_duration = last_date - first_date
+                uninstalls[usage_duration.days] += 1
 
         for uninstall in uninstalls.items():
             print(uninstall)
