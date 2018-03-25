@@ -25,7 +25,11 @@ class Command(BaseCommand):
                 if "users" not in device or not device["users"]:
                     self.stdout.write(str(device))
                     continue
-                uninstalls.add((device["branchReferral"], device["users"]))
+                if "branchReferral" in device:
+                    branchReferral = device["branchReferral"]
+                else:
+                    branchReferral = ""
+                uninstalls.add((branchReferral, device["users"]))
 
         for uninstall in uninstalls:
             self.stdout.write(uninstall)
