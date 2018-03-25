@@ -13,7 +13,8 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         uninstalls = defaultdict(lambda: set())
 
-        devices = client['joojoo']['deviceDB'].find({"firstDate": {"$exists": True, "$ne": None}})
+        devices = client['joojoo']['deviceDB'].find({"firstDate": {"$exists": True, "$ne": None},
+                                                     "info.pusheId": {"$exists": True, "$ne": None}})
         for device in devices:
             first_date = datetime.datetime.fromtimestamp(int(device["firstDate"] / 1000))
             if first_date.date() >= (datetime.datetime.now() - datetime.timedelta(days=1)).date():
