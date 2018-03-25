@@ -32,5 +32,5 @@ class Command(BaseCommand):
                 uninstalls.append((branchReferral, device["users"]))
 
         for uninstall in uninstalls:
-            self.stdout.write(uninstall)
+            print(uninstall)
         self.stdout.write(self.style.SUCCESS('Finish'))
