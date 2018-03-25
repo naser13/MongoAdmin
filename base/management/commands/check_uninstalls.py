@@ -31,8 +31,8 @@ class Command(BaseCommand):
                     branchReferral = device["info"]["branchReferral"]
                 else:
                     branchReferral = "###"
-                uninstalls[device["info"]["pusheId"]].append((branchReferral, users))
+                query_count = client['joojoo']['queryDB'].count({"device": device["guid"]})
+                uninstalls[device["info"]["pusheId"]].append((branchReferral, users, query_count))
 
         for uninstall in uninstalls.items():
             print(uninstall)
-        self.stdout.write(self.style.SUCCESS('Finish'))
