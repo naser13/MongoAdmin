@@ -37,21 +37,21 @@ def collection_view(request, db_name, collection_name):
         raise Http404()
     collection = db[collection_name]
 
-    collection_keys = get_collection_keys(db_name, collection_name)
+    collection_keys, search_keys = get_collection_keys(db_name, collection_name)
 
     objects = collection.find()
 
     page = 1
     per_page = 10
     if request.method == 'POST':
-        form = SearchForm(data=request.POST, keys=collection_keys)
+        form = SearchForm(data=request.POST, keys=search_keys)
         if form.is_valid():
             query = form.get_result()
             objects = collection.find(query)
             page = form.cleaned_data['page']
             per_page = form.cleaned_data['per_page']
     else:
-        form = SearchForm(keys=collection_keys)
+        form = SearchForm(keys=search_keys)
 
     paginator = Paginator(objects, per_page)
     try:
