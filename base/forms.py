@@ -1,7 +1,10 @@
+from collections import defaultdict
+
 from django import forms
 
 TYPES_NOT_FILTERED = ['Object', 'ObjectId', 'Array']
 NUMERIC_TYPES = ['Number', 'NumberLong']
+DATE_TYPES = ['Date']
 
 
 class SearchForm(forms.Form):
@@ -15,12 +18,21 @@ class SearchForm(forms.Form):
             if key_type not in TYPES_NOT_FILTERED:
                 if key_type in NUMERIC_TYPES:
                     self.fields[key] = forms.IntegerField(required=False)
+                elif key_type in DATE_TYPES:
+                    self.fields[key + "__gte"] = forms.DateTimeField(required=False)
+                    self.fields[key + "__lte"] = forms.DateTimeField(required=False)
                 else:
                     self.fields[key] = forms.CharField(required=False)
 
     def get_result(self):
-        result = {}
+        result = defaultdict(lambda: {})
         for key, key_type in self.keys:
-            if key_type not in TYPES_NOT_FILTERED and self.cleaned_data[key]:
-                result[key] = self.cleaned_data[key]
+            if key_type not in TYPES_NOT_FILTERED:
+                if key_type in DATE_TYPES:
+                    if self.cleaned_data[key + "__gte"]:
+                        result[key]["$gte"] = self.cleaned_data[key + "__gte"]
+                    if self.cleaned_data[key + "__lte"]:
+                        result[key]["$lte"] = self.cleaned_data[key + "__lte"]
+                elif self.cleaned_data[key]:
+                    result[key] = self.cleaned_data[key]
         return result
