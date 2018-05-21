@@ -5,6 +5,9 @@ NUMERIC_TYPES = ['Number', 'NumberLong']
 
 
 class SearchForm(forms.Form):
+    page = forms.IntegerField(initial=1)
+    per_page = forms.IntegerField(initial=10)
+
     def __init__(self, *args, **kwargs):
         self.keys = kwargs.pop("keys")
         super(SearchForm, self).__init__(*args, **kwargs)
