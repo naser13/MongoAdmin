@@ -20,7 +20,8 @@ class Command(BaseCommand):
         pusheIds = sum(pusheIds, [])
         uninstalls = defaultdict(lambda: [])
 
-        devices = client['joojoo']['deviceDB'].find({"info.pusheId": {"$exists": True, "$ne": None}})
+        devices = client['joojoo']['deviceDB'].find({"info.pusheId": {"$exists": True, "$ne": None},
+                                                     "info.appVersion": {"$gte": 18}})
         for device in devices:
             if device["info"]["pusheId"] not in pusheIds:
                 if "users" in device and device["users"]:
