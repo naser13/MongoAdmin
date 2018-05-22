@@ -6,7 +6,7 @@ from pymongo import MongoClient
 
 TYPES_IGNORED = ['ObjectId']
 
-variety_command = """%s %s --quiet --eval "var collection = '%s', outputFormat='json'" variety.js"""
+variety_command = """%s %s --quiet --eval "var collection = '%s', limit = 100, outputFormat='json'" variety.js"""
 csv_command = """%sexport --db %s --collection %s --query '%s' --type=csv --fields %s"""
 
 client = MongoClient()
