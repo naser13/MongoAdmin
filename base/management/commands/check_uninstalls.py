@@ -32,7 +32,7 @@ class Command(BaseCommand):
                 else:
                     branchReferral = "###"
                 query_count = client['joojoo']['queryDB'].count({"device": device["guid"]})
-                login_query_count = client['joojoo']['loginqueryDB'].count({"guid": device["guid"]})
+                login_query_count = client['joojoo']['loginqueryDB'].count({"device": device["guid"]})
                 uninstalls[device["info"]["pusheId"]].append(
                     (branchReferral, users, login_query_count, query_count))
 
