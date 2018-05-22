@@ -72,7 +72,7 @@ def get_csv(request, db_name, collection_name):
     if request.method == 'POST':
         form = SearchForm(data=request.POST, keys=search_keys)
         if form.is_valid():
-            query = form.get_result()
+            query = form.get_result(strict=True)
     csv = get_collection_csv(db_name, collection_name, collection_keys, query)
     csv = codecs.BOM_UTF8 + csv
     response = HttpResponse(csv, content_type="text/csv; charset=utf-8")
