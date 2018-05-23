@@ -36,7 +36,7 @@ class SearchForm(forms.Form):
                             result[key]["$gte"] = self.cleaned_data[key + "__gte"]
                     if self.cleaned_data[key + "__lte"]:
                         if strict:
-                            result[key]["$lte"] = {"$date": self.cleaned_data[key + "__gte"].isoformat()}
+                            result[key]["$lte"] = {"$date": self.cleaned_data[key + "__lte"].isoformat()}
                         else:
                             result[key]["$lte"] = self.cleaned_data[key + "__lte"]
                 elif self.cleaned_data[key]:
