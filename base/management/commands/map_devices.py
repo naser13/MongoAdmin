@@ -12,9 +12,9 @@ class Command(BaseCommand):
         counter = 0
         for device in devices:
             guid = device["guid"]
-            users = device["users"]
-            if not users:
+            if "users" not in device or not device["users"]:
                 continue
+            users = device["users"]
             for user_id in users:
                 user = client['joojoo']['userDB'].find_one({"phoneNumber": user_id})
                 user_devices = user.get('devices') or []
