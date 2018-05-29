@@ -28,9 +28,10 @@ def cache_collection_keys(db_name, collection_name):
             if 'XX' not in key:
                 search_keys.append((key, key_type))
 
-    client['variety'][db_name].insert_one({"collection": collection_name,
-                                           "collection_keys": collection_keys,
-                                           "search_keys": search_keys})
+    client['variety'][db_name].find_one_and_replace(
+        {"collection": collection_name},
+        {"collection": collection_name, "collection_keys": collection_keys, "search_keys": search_keys},
+        upsert=True)
 
 
 def get_collection_keys(db_name, collection_name):
